@@ -1,0 +1,109 @@
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	font-family: Arial;
+	touch-action: none;
+	overflow: hidden;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* Channels */
+
+#channels {
+	display: flex;
+	position: absolute;
+	width: calc(100% - 10vw);
+	height: calc(100% - 10vw);
+}
+
+#channels .channel {
+	height: 100%;
+	flex: 1;
+}
+
+/* Levels */
+
+#levels {
+	position: absolute;
+	width: calc(100% - 10vw);
+	height: calc(100% - 10vw);
+	bottom: 10vw;
+	opacity: .25;
+	pointer-events: none;
+}
+
+/* Icons */
+
+#icons {
+	display: flex;
+	position: absolute;
+	bottom: 0;
+	width: calc(100% - 10vw);
+	height: 10vw;
+}
+
+#icons .icon {
+	padding: 2vw;
+	border-top: 5px solid rgba(0, 0, 0, .25);
+	cursor: pointer;
+	flex: 1;
+}
+
+/* Controls */
+
+#controls {
+	z-index: 999;
+	display: grid;
+	position: absolute;
+	width: calc(100% - 10vw);
+	height: 100%;
+	visibility: hidden;
+}
+
+#controls .levels {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	opacity: .25;
+	grid-area: gain;
+	pointer-events: none;
+}
+
+#controls [onclick] {
+	grid-area: back;
+}
+
+/* Scripts */
+
+#scripts {
+	position: absolute;
+	right: 0;
+	width: 10vw;
+	height: 100%;
+	background-color: #444;
+	border-left: 5px solid #333;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+#scripts::-webkit-scrollbar {
+	display: none;
+}
+
+#scripts .script {
+	width: 100%;
+	padding: 1.5vw;
+	font-size: 2vw;
+}

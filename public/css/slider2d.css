@@ -1,0 +1,37 @@
+.slider2d {
+	display: inline-flex;
+	position: relative;
+	font-weight: bold;
+	text-align: center;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	overflow: hidden;
+}
+
+.slider2d:before {
+	box-sizing: border-box;
+	content: attr(data-label);
+	width: 100%;
+	color: rgba(255, 255, 255, .75);
+	font-size: 2.25vw;
+	margin-top: 1vw;
+	margin-bottom: .5vw;
+	z-index: 999;
+}
+
+.slider2d:after {
+	box-sizing: border-box;
+	content: attr(data-value);
+	width: 100%;
+	color: rgba(255, 255, 255, .5);
+	font-size: 1.25vw;
+	z-index: 999;
+}
+
+.slider2d .slider2d-knob {
+	position: absolute;
+	width: 1.75vw;
+	height: 1.75vw;
+	border-radius: 25%;
+}

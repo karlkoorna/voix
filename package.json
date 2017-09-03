@@ -1,0 +1,13 @@
+{
+  "name": "voix",
+  "description": "Voicemeeter web interface.",
+  "author": "Karl Köörna",
+  "license": "MIT",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "express": "latest",
+    "voicemeeter": "gist:4b5e845cb8f986ed481121054667780d",
+    "ws": "latest"
+  }
+}
