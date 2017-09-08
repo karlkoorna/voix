@@ -1,5 +1,4 @@
 const config = require('./config.json');
-const path = require('path');
 const fs = require('fs');
 const vm = require('voicemeeter')(config.path);
 const WebSocket = require('ws');
@@ -12,13 +11,13 @@ if (vm.getType() !== 2) { vm.logout(); throw new Error('Where is my banana?'); }
 const wss = new WebSocket.Server({ port: config.port + 1 });
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 app.get('/scripts', (req, res) => {
 	
 	try {
 		
-		res.json(fs.readdirSync('scripts').filter((file) => path.extname(file) === '.vms').map((file) => path.basename(file, '.vms').substring(file.indexOf('-') + 2)));
+		res.json(fs.readdirSync('scripts').filter((file) => file.endsWith('.vms')).map((file) => file.slice(file.indexOf('-') + 2, -4)));
 	
 	} catch (ex) {
 		
@@ -32,7 +31,7 @@ app.get('/scripts/:script', (req, res) => {
 	
 	try {
 		
-		vm.setMultiple(fs.readFileSync(path.join('scripts', `${req.params.script}.vms`)).toString());
+		vm.setMultiple(fs.readFileSync(`scripts/${req.params.script}.vms`).toString());
 		
 		res.end();
 		
