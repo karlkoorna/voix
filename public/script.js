@@ -1,4 +1,4 @@
-const ws = new WebSocket(`ws://${window.location.hostname}:${(window.location.port || 80) + 1}`);
+const ws = new WebSocket(`ws://${window.location.hostname}:${(Number(window.location.port) || 80) + 1}`);
 
 const $levels = document.getElementById('levels');
 const $controls = document.getElementById('controls');
