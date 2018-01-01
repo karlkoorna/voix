@@ -1,12 +1,12 @@
 # Voix
 Voicemeeter web interface.
 
-**Scripts**
+### Scripts
 
-***Filename:*** [order] - [name]\
-***Contents:*** [Voicemeeter API Guide](http://vbaudio.jcedeveloppement.com/Download_CABLE/VoicemeeterRemoteAPI.pdf#page=9)
+**Filename:** [order] - [name]\
+**Contents:** [Voicemeeter API Guide](http://vbaudio.jcedeveloppement.com/Download_CABLE/VoicemeeterRemoteAPI.pdf#page=9)
 
-**config.json**
+### config.json
 ```
 {
   "path": "VoicemeeterRemote64.dll", // Absolute path to VoicemeeterRemote.dll
