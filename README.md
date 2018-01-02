@@ -17,7 +17,7 @@ Voicemeeter web interface.
 
 ### Known issues
 
-* No Tape Recorder interface.
-* No Equalizer interface.
-* No Settings interface.
-* No VBAN interface.
+* No Tape Recorder view.
+* No Equalizer view.
+* No Settings view.
+* No VBAN view.
