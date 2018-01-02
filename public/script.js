@@ -6,7 +6,7 @@ const $scripts = document.getElementById('scripts');
 
 const state = {};
 
-if (window.location.search.indexOf('view') > -1) WebSocket.prototype.send = () => {};
+if ((new URLSearchParams(location.search)).has('view')) WebSocket.prototype.send = () => {};
 
 function showControls(channel) {
 	
