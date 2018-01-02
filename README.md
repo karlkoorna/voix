@@ -10,8 +10,8 @@ Voicemeeter web interface.
 
 ```
 {
-  "path": "VoicemeeterRemote64.dll", // Absolute path to Voicemeeter Remote DLL.
-  "port": 80                         // HTTP server port, next port is used for WS server.
+  "path": "VoicemeeterRemote64.dll", // Absolute path to Voicemeeter Remote DLL
+  "port": 80                         // HTTP server port, next port is used for WS server
 }
 ```
 
