@@ -2,7 +2,7 @@
   "name": "voix",
   "description": "Voicemeeter web interface.",
   "author": "Karl Köörna",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "version": "1.0.0",
   "main": "app.js",
   "dependencies": {
