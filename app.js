@@ -1,6 +1,6 @@
 const config = require('./config.json');
 const fs = require('fs');
-const vm = require('voicemeeter')(config.path);
+const vm = require('voice')(config.path);
 const WebSocket = require('ws');
 const express = require('express');
 
