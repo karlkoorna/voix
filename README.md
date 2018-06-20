@@ -1,7 +1,12 @@
 # Voix
 Voicemeeter web interface.
 
-### config.json
+### Scripts
+
+**Filename:** [order] - [name].vms\
+**Contents:** [Voicemeeter API Guide](http://vbaudio.jcedeveloppement.com/Download_CABLE/VoicemeeterRemoteAPI.pdf#page=9)
+
+### Configuration (config.json)
 
 ```
 {
@@ -9,11 +14,6 @@ Voicemeeter web interface.
   "port": 80                         // HTTP server port, next port is used for WS server
 }
 ```
-
-### Scripts
-
-**Filename:** [order] - [name].vms\
-**Contents:** [Voicemeeter API Guide](http://vbaudio.jcedeveloppement.com/Download_CABLE/VoicemeeterRemoteAPI.pdf#page=9)
 
 ### Known issues
 
