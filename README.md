@@ -1,12 +1,12 @@
 # Voix
 Voicemeeter web interface.
 
-### Scripts
+## Scripts
 
 **Filename:** [order] - [name].vms\
 **Contents:** [Voicemeeter API Guide](http://vbaudio.jcedeveloppement.com/Download_CABLE/VoicemeeterRemoteAPI.pdf#page=9)
 
-### Configuration (config.json)
+## Configuration (config.json)
 
 ```
 {
@@ -15,7 +15,7 @@ Voicemeeter web interface.
 }
 ```
 
-### Known issues
+## Known issues
 
 * No Tape Recorder view.
 * No Equalizer view.
