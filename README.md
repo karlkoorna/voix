@@ -1,5 +1,5 @@
 # Voix
-Voicemeeter web interface.
+Voicemeeter Banana web interface.
 
 ## Scripts
 
