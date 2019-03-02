@@ -7,7 +7,10 @@
   "main": "app.js",
   "dependencies": {
     "express": "^4.16.3",
-    "voicemeeter": "gist:4b5e845cb8f986ed481121054667780d",
+    "voice": "gist:4b5e845cb8f986ed481121054667780d",
     "ws": "^5.0.0"
+  },
+  "scripts": {
+    "start": "node app.js"
   }
 }

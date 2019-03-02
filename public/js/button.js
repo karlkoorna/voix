@@ -13,7 +13,6 @@
 	}
 	
 	function create(el) {
-		
 		const type = el.getAttribute('data-type');
 		const color = el.getAttribute('data-color');
 		
@@ -37,41 +36,27 @@
 		}
 		
 		function click(e) {
-			
 			if (type !== 'toggle') return;
 			if (!e.changedTouches) if (e.which !== 1) return;
 			
 			el.setAttribute('data-value', parseInt(el.getAttribute('data-value')) ? 0 : 1);
 			el.dispatchEvent(new CustomEvent('value'));
-			
 		}
 		
 		function enter(e) {
-			
 			if (type === 'toggle') {
-				
 				if (!parseInt(el.getAttribute('data-value'))) el.style.backgroundColor = colorize(color, 32);
-				
 			} else {
-				
 				el.style.backgroundColor = colorize(color, 32);
-				
 			}
-			
 		}
 		
 		function leave(e) {
-			
 			if (type === 'toggle') {
-				
 				if (!parseInt(el.getAttribute('data-value'))) el.style.backgroundColor = colorize(color);
-			
 			} else {
-				
 				el.style.backgroundColor = colorize(color);
-				
 			}
-			
 		}
 		
 	}

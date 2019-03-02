@@ -9,16 +9,13 @@ const state = {};
 if ((new URLSearchParams(location.search)).has('view')) WebSocket.prototype.send = () => {};
 
 function showControls(channel) {
-	
 	$controls.innerHTML = `
 		<div class="slider1d control" data-bind="${channel}.Gain" data-min="-60" data-max="12" data-reset="0" data-value="0" data-orientation="vertical" data-color="#00be79">${document.querySelector(`#channels .channel[data-bind^="${channel}"] .slider1d-text`).getAttribute('data-label')}</div>
 		<canvas class="levels"></canvas>
 	`;
 	
 	if (channel.startsWith('Strip')) {
-		
 		if (channel.substr(-2, 1) < 3) {
-			
 			Object.assign($controls.style, {
 				gridTemplateAreas: '"gain comp comp gate gate" "gain a1 a2 a3 b1" "gain solo mute mono b2" "gain pan color fx back"',
 				gridTemplateColumns: '.5fr 1fr 1fr 1fr 1fr',
@@ -33,9 +30,7 @@ function showControls(channel) {
 				<div class="slider1d control" data-bind="${channel}.Gate" data-min="0" data-max="10" data-reset="0" data-value="0" data-orientation="horizontal" data-color="#dc9a00">Gate</div>
 				<div class="button control" data-bind="${channel}.Mono" data-value="0" data-type="toggle" data-color="#1d82bc">MONO</div>
 			`;
-			
 		} else {
-			
 			Object.assign($controls.style, {
 				gridTemplateAreas: '"gain eqgain1 eqgain2 eqgain3 pan" "gain a1 a2 a3 b1" "gain solo mute mc b2" "gain back back back back"',
 				gridTemplateColumns: '.5fr 1fr 1fr 1fr 1fr',
@@ -49,7 +44,6 @@ function showControls(channel) {
 				<div class="slider2d control" data-bind="${channel}.Pan" data-x-min="-0.5" data-x-max="0.5" data-x-reset="0" data-x-value="0" data-y-min="0" data-y-max="0.5" data-y-reset="0" data-y-value="0" data-color="#d93535">Pan</div>
 				<div class="button control" data-bind="${channel}.Mc" data-value="0" data-type="toggle" data-color="#1d82bc">M.C</div>
 			`;
-			
 		}
 		
 		$controls.innerHTML += `
@@ -60,9 +54,7 @@ function showControls(channel) {
 			<div class="button control" data-bind="${channel}.B2" data-value="0" data-type="toggle" data-color="#00be79">B2</div>
 			<div class="button control" data-bind="${channel}.Solo" data-value="0" data-type="toggle" data-color="#1d82bc">SOLO</div>
 		`;
-		
 	} else {
-		
 		Object.assign($controls.style, {
 			gridTemplateAreas: '"gain mono mono" "gain eq eq" "gain mute mute" "gain back back"',
 			gridTemplateColumns: '.25fr 1fr 1fr',
@@ -73,7 +65,6 @@ function showControls(channel) {
 			<div class="button control" data-bind="${channel}.Mono" data-value="0" data-type="toggle" data-color="#1c78ad">MONO</div>
 			<div class="button control" data-bind="${channel}.Eq.On" data-value="0" data-type="toggle" data-color="#1d82bc">EQ</div>
 		`;
-		
 	}
 	
 	$controls.innerHTML += `
@@ -82,60 +73,43 @@ function showControls(channel) {
 	`;
 	
 	for (const el of document.querySelectorAll('#controls .control')) {
-		
 		const bind = el.getAttribute('data-bind');
-		
 		if (!bind) continue;
 		
 		el.style.gridArea = bind.split('.')[1].toLowerCase();
 		
 		if (el.classList.contains('slider2d')) {
-			
 			el.setAttribute('data-x-value', state[`${bind}_x`]);
 			el.setAttribute('data-y-value', state[`${bind}_y`]);
-			
 			el.addEventListener('value', () => {
 				ws.send(JSON.stringify([ `${bind}_x`, el.getAttribute('data-x-value') ]));
 				ws.send(JSON.stringify([ `${bind}_y`, el.getAttribute('data-y-value') ]));
 			});
-			
 		} else {
-			
 			el.setAttribute('data-value', state[bind]);
-			
 			el.addEventListener('value', () => {
 				ws.send(JSON.stringify([ bind, el.getAttribute('data-value') ]));
 			});
-			
 		}
-		
 	}
 	
 	resize();
 	
 	const update = setInterval(() => {
-		
 		if ($controls.style.visibility !== 'visible') return void clearInterval(update);
-		
 		const start = (channel.startsWith('Bus') ? 10 : 0) + channel.substr(-2, 1) * 2
-		
 		levels($controls.querySelector('.levels'), state.levels.slice(start, start + 2));
-		
 	}, 5);
 	
 	$controls.style.visibility = 'visible';
-	
 }
 
 function hideControls() {
-	
 	$controls.style.visibility = 'hidden';
 	$controls.innerHTML = '';
-	
 }
 
 function levels(canvas, levels) {
-	
 	const ctx = canvas.getContext('2d');
 	const grd = ctx.createLinearGradient(0, 0, 0, canvas.height);
 	
@@ -150,29 +124,21 @@ function levels(canvas, levels) {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	const width = canvas.width / levels.length;
-	
 	for (const i in levels) ctx.fillRect(i * width, canvas.height, width, -(levels[i] * canvas.height / 72));
-	
 }
 
 resize();
 function resize() {
-	
 	for (const el of document.getElementsByTagName('canvas')) {
-		
 		const rect = el.getBoundingClientRect();
-		
 		el.width = rect.width;
 		el.height = rect.height;
-		
 	}
-	
 }
 
 window.addEventListener('resize', resize);
 
 for (let i = 0; i < 10; i++) {
-	
 	const channel = document.querySelectorAll('#channels .channel')[i];
 	const icon = document.querySelectorAll('#icons .icon')[i];
 	
@@ -183,38 +149,27 @@ for (let i = 0; i < 10; i++) {
 	icon.addEventListener('click', () => {
 		showControls(channel.getAttribute('data-bind').split('.')[0]);
 	});
-	
 }
 
 fetch('scripts').then((res) => {
-	
 	if (res.ok) res.json().then((data) => {
-		
 		for (const i in data) $scripts.innerHTML += `<div class="button script" data-order="${i}" data-color="#${i % 2 ? '555555' : '656565'}">${data[i]}</div>`;
-		
 		for (const el of document.querySelectorAll('#scripts .script')) el.addEventListener('click', () => {
 			fetch(`scripts/${el.getAttribute('data-order')} - ${el.innerText}`);
 		});
-		
 	});
-	
 });
 
 ws.addEventListener('message', (e) => {
-	
 	const changes = JSON.parse(e.data);
-	
 	levels($levels, changes.levels);
 	
 	for (const key in changes) {
-		
 		for (const el of document.querySelectorAll(`[data-bind="${key.substr(0, key.indexOf('_')) || key}"]`)) el.setAttribute(`data-${key.indexOf('_') > -1 ? `${key.split('_')[1]}-` : ''}value`, changes[key]);
 		
 		if (key.indexOf('Mute') > -1) document.querySelectorAll('#icons .icon')[parseInt((key.indexOf('Bus') > -1 ? 5 : 0) + parseInt(key.substr(-7, 1)))].setAttribute('src', `assets/icons/${key.indexOf('Strip') > -1 ? 'microphone' : 'speaker'}${changes[key] === 1 ? '-mute' : ''}.png`);
 		if (key.indexOf('Solo') > -1) document.querySelectorAll('#icons .icon')[parseInt((key.indexOf('Bus') > -1 ? 5 : 0) + parseInt(key.substr(-7, 1)))].style.borderTop = `5px solid rgba(${changes[key] === 1 ? '255, 255, 255, .5' : '0, 0, 0, .25'})`;
 		
 		state[key] = changes[key];
-		
 	}
-	
 });

@@ -9,7 +9,7 @@ body {
 
 body {
 	margin: 0;
-	font-family: Arial;
+	font-family: Arial, sans-serif;
 	touch-action: none;
 	overflow: hidden;
 	user-select: none;

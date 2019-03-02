@@ -14,33 +14,20 @@ const app = express();
 app.use(express.static('public'));
 
 app.get('/scripts', (req, res) => {
-	
 	try {
-		
 		res.json(fs.readdirSync('scripts').filter((file) => file.endsWith('.vms')).map((file) => file.slice(file.indexOf('-') + 2, -4)));
-	
 	} catch (ex) {
-		
 		res.status(500).send(ex);
-		
 	}
-	
 });
 
 app.get('/scripts/:script', (req, res) => {
-	
 	try {
-		
 		vm.setMultiple(fs.readFileSync(`scripts/${req.params.script}.vms`).toString());
-		
 		res.end();
-		
 	} catch (ex) {
-		
 		res.status(500).send(ex);
-		
 	}
-	
 });
 
 app.listen(config.port);
@@ -51,9 +38,7 @@ const lastState = {};
 let changes = {};
 
 setInterval(() => {
-	
 	const levels = [];
-	
 	for (let i = 0; i < 8; i++) levels[i] = vm.getLevel(1, i);
 	
 	levels[8] = vm.getLevel(1, 14);
@@ -71,35 +56,22 @@ setInterval(() => {
 	levels[19] = vm.getLevel(3, 33);
 	
 	for (const i in levels) state.levels[i] += levels[i] > state.levels[i] && levels[i] > 0 ? levels[i] - state.levels[i] : -.056;
-	
 	if (vm.isDirty()) for (const bind of binds.slice(0, -1)) state[bind] = vm.getFloat(bind);
 	
 	changes.levels = state.levels;
-	
 	for (const key in state) {
-		
 		if (JSON.stringify(state[key]) !== JSON.stringify(lastState[key])) changes[key] = state[key];
-		
 		lastState[key] = state[key];
-		
 	}
 	
 	for (const client of wss.clients) if (client.readyState === WebSocket.OPEN) client.send(JSON.stringify(changes));
-	
 	changes = {};
-	
 }, 5);
 
 wss.on('connection', (ws) => {
-	
 	ws.send(JSON.stringify(state));
-	
 	ws.on('message', (msg) => {
-		
 		const data = JSON.parse(msg);
-		
 		vm.setFloat(data[0], data[1]);
-		
 	});
-	
 });
