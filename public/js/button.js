@@ -1,5 +1,4 @@
-(function(){
-	
+(function() {
 	for (const el of document.getElementsByClassName('button')) create(el);
 	
 	new MutationObserver((mutations) => {
@@ -43,22 +42,16 @@
 			el.dispatchEvent(new CustomEvent('value'));
 		}
 		
-		function enter(e) {
+		function enter() {
 			if (type === 'toggle') {
 				if (!parseInt(el.getAttribute('data-value'))) el.style.backgroundColor = colorize(color, 32);
-			} else {
-				el.style.backgroundColor = colorize(color, 32);
-			}
+			} else el.style.backgroundColor = colorize(color, 32);
 		}
 		
-		function leave(e) {
+		function leave() {
 			if (type === 'toggle') {
 				if (!parseInt(el.getAttribute('data-value'))) el.style.backgroundColor = colorize(color);
-			} else {
-				el.style.backgroundColor = colorize(color);
-			}
+			} else el.style.backgroundColor = colorize(color);
 		}
-		
 	}
-	
 })();

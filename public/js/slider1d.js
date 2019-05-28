@@ -1,5 +1,4 @@
-(function(){
-	
+(function() {
 	for (const el of document.getElementsByClassName('slider1d')) create(el);
 	
 	new MutationObserver((mutations) => {
@@ -63,44 +62,32 @@
 			if (e.changedTouches) {
 				const rect = el.getBoundingClientRect();
 				for (const touch of e.changedTouches) if (rect.left <= touch.pageX && touch.pageX <= rect.left + rect.width && rect.top <= touch.pageY && touch.pageY <= rect.top + rect.height) dragging = touch.identifier;
-			} else {
-				if (e.which === 1) dragging = true;
-			}
+			} else if (e.which === 1) dragging = true;
 		}
 		
 		function move(e) {
 			if (dragging === false) return;
 			const rect = el.getBoundingClientRect();
 			
-			if (typeof dragging === 'number') {
-				for (const touch of e.changedTouches) {
-					if (dragging !== touch.identifier) continue;
+			if (typeof dragging === 'number') for (const touch of e.changedTouches) {
+				if (dragging !== touch.identifier) continue;
 					
-					x = touch.pageX - rect.left;
-					y = touch.pageY - rect.top;
-				}
+				x = touch.pageX - rect.left;
+				y = touch.pageY - rect.top;
 			} else {
 				x = e.pageX - rect.left;
 				y = e.pageY - rect.top;
 			}
 			
-			if (orientation === 'horizontal') {
-				el.setAttribute('data-value', Math.min(Math.max(x * 100 / rect.width * (max - min) / 100 + min, min), max));
-			} else {
-				el.setAttribute('data-value', Math.min(Math.max((100 - (y * 100 / rect.height)) * (max - min) / 100 + min, min), max));
-			}
+			if (orientation === 'horizontal') el.setAttribute('data-value', Math.min(Math.max(x * 100 / rect.width * (max - min) / 100 + min, min), max));
+			else el.setAttribute('data-value', Math.min(Math.max((100 - (y * 100 / rect.height)) * (max - min) / 100 + min, min), max));
 			
 			el.dispatchEvent(new CustomEvent('value'));
 		}
 		
 		function end(e) {
-			if (e.changedTouches) {
-				for (const touch of e.changedTouches) if (dragging === touch.identifier) dragging = false;
-			} else {
-				if (e.which === 1) dragging = false;
-			}
+			if (e.changedTouches) for (const touch of e.changedTouches) if (dragging === touch.identifier) dragging = false;
+			else if (e.which === 1) dragging = false;
 		}
-		
 	}
-	
 })();

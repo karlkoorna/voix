@@ -97,7 +97,7 @@ function showControls(channel) {
 	
 	const update = setInterval(() => {
 		if ($controls.style.visibility !== 'visible') return void clearInterval(update);
-		const start = (channel.startsWith('Bus') ? 10 : 0) + channel.substr(-2, 1) * 2
+		const start = (channel.startsWith('Bus') ? 10 : 0) + channel.substr(-2, 1) * 2;
 		levels($controls.querySelector('.levels'), state.levels.slice(start, start + 2));
 	}, 5);
 	
@@ -109,7 +109,7 @@ function hideControls() {
 	$controls.innerHTML = '';
 }
 
-function levels(canvas, levels) {
+function levels(canvas, values) {
 	const ctx = canvas.getContext('2d');
 	const grd = ctx.createLinearGradient(0, 0, 0, canvas.height);
 	
@@ -123,8 +123,8 @@ function levels(canvas, levels) {
 	ctx.fillStyle = grd;
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	const width = canvas.width / levels.length;
-	for (const i in levels) ctx.fillRect(i * width, canvas.height, width, -(levels[i] * canvas.height / 72));
+	const width = canvas.width / values.length;
+	for (const i in values) ctx.fillRect(i * width, canvas.height, width, -(values[i] * canvas.height / 72));
 }
 
 resize();
