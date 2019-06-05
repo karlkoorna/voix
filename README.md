@@ -1,7 +1,8 @@
 # Voix
 Voicemeeter Banana web interface.
 
-## Scripts
+## Usage
+Scripts are defined in `scripts/`.
 
 **Filename:** [order] - [name].vms\
 **Contents:** [Voicemeeter API Guide](http://vbaudio.jcedeveloppement.com/Download_CABLE/VoicemeeterRemoteAPI.pdf#page=9)
