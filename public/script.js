@@ -1,4 +1,4 @@
-const ws = new WebSocket(`ws://${window.location.hostname}:${(Number(window.location.port) || 80) + 1}`);
+const ws = new WebSocket(`ws://${location.hostname}:${(Number(location.port) || 80) + 1}`);
 
 const $levels = document.getElementById('levels');
 const $controls = document.getElementById('controls');
@@ -6,16 +6,19 @@ const $scripts = document.getElementById('scripts');
 
 const state = {};
 
+// View only mode.
 if ((new URLSearchParams(location.search)).has('view')) WebSocket.prototype.send = () => {};
 
+// Show control view for channel.
 function showControls(channel) {
 	$controls.innerHTML = `
 		<div class="slider1d control" data-bind="${channel}.Gain" data-min="-60" data-max="12" data-reset="0" data-value="0" data-orientation="vertical" data-color="#00be79">${document.querySelector(`#channels .channel[data-bind^="${channel}"] .slider1d-text`).getAttribute('data-label')}</div>
 		<canvas class="levels"></canvas>
 	`;
 	
-	if (channel.startsWith('Strip')) {
-		if (channel.substr(-2, 1) < 3) {
+	// Add elements to...
+	if (channel.startsWith('Strip')) { // strip control view...
+		if (channel.substr(-2, 1) < 3) { // (hardware).
 			Object.assign($controls.style, {
 				gridTemplateAreas: '"gain comp comp gate gate" "gain a1 a2 a3 b1" "gain solo mute mono b2" "gain pan color fx back"',
 				gridTemplateColumns: '.5fr 1fr 1fr 1fr 1fr',
@@ -30,7 +33,7 @@ function showControls(channel) {
 				<div class="slider1d control" data-bind="${channel}.Gate" data-min="0" data-max="10" data-reset="0" data-value="0" data-orientation="horizontal" data-color="#dc9a00">Gate</div>
 				<div class="button control" data-bind="${channel}.Mono" data-value="0" data-type="toggle" data-color="#1d82bc">MONO</div>
 			`;
-		} else {
+		} else { // (virtual).
 			Object.assign($controls.style, {
 				gridTemplateAreas: '"gain eqgain1 eqgain2 eqgain3 pan" "gain a1 a2 a3 b1" "gain solo mute mc b2" "gain back back back back"',
 				gridTemplateColumns: '.5fr 1fr 1fr 1fr 1fr',
@@ -54,7 +57,7 @@ function showControls(channel) {
 			<div class="button control" data-bind="${channel}.B2" data-value="0" data-type="toggle" data-color="#00be79">B2</div>
 			<div class="button control" data-bind="${channel}.Solo" data-value="0" data-type="toggle" data-color="#1d82bc">SOLO</div>
 		`;
-	} else {
+	} else { // bus control view.
 		Object.assign($controls.style, {
 			gridTemplateAreas: '"gain mono mono" "gain eq eq" "gain mute mute" "gain back back"',
 			gridTemplateColumns: '.25fr 1fr 1fr',
@@ -72,6 +75,7 @@ function showControls(channel) {
 		<div class="button control" data-color="#666666" onclick="hideControls()">BACK</div>
 	`;
 	
+	// Bind elements to state.
 	for (const el of document.querySelectorAll('#controls .control')) {
 		const bind = el.getAttribute('data-bind');
 		if (!bind) continue;
@@ -104,11 +108,13 @@ function showControls(channel) {
 	$controls.style.visibility = 'visible';
 }
 
+// Hide control view.
 function hideControls() {
 	$controls.style.visibility = 'hidden';
 	$controls.innerHTML = '';
 }
 
+// Draw audio levels.
 function levels(canvas, values) {
 	const ctx = canvas.getContext('2d');
 	const grd = ctx.createLinearGradient(0, 0, 0, canvas.height);
@@ -127,7 +133,7 @@ function levels(canvas, values) {
 	for (const i in values) ctx.fillRect(i * width, canvas.height, width, -(values[i] * canvas.height / 72));
 }
 
-resize();
+// Resize elements.
 function resize() {
 	for (const el of document.getElementsByTagName('canvas')) {
 		const rect = el.getBoundingClientRect();
@@ -136,8 +142,10 @@ function resize() {
 	}
 }
 
+resize();
 window.addEventListener('resize', resize);
 
+// Bind audio level sliders to state.
 for (let i = 0; i < 10; i++) {
 	const channel = document.querySelectorAll('#channels .channel')[i];
 	const icon = document.querySelectorAll('#icons .icon')[i];
@@ -151,15 +159,17 @@ for (let i = 0; i < 10; i++) {
 	});
 }
 
+// Load scripts.
 fetch('scripts').then((res) => {
 	if (res.ok) res.json().then((data) => {
-		for (const i in data) $scripts.innerHTML += `<div class="button script" data-order="${i}" data-color="#${i % 2 ? '555555' : '656565'}">${data[i]}</div>`;
+		for (const i in data) $scripts.innerHTML += `<div class="button script" data-order="${i}" data-color="#${i % 2 ? '3a3a3a3a' : '4a4a4a'}">${data[i]}</div>`;
 		for (const el of document.querySelectorAll('#scripts .script')) el.addEventListener('click', () => {
 			fetch(`scripts/${el.getAttribute('data-order')} - ${el.innerText}`);
 		});
 	});
 });
 
+// Handle WS messages.
 ws.addEventListener('message', (e) => {
 	const changes = JSON.parse(e.data);
 	levels($levels, changes.levels);
