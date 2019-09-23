@@ -89,8 +89,9 @@
 		}
 		
 		function end(e) {
-			if (e.changedTouches) for (const touch of e.changedTouches) if (dragging === touch.identifier) dragging = false;
-			else if (e.which === 1) dragging = false;
+			if (e.changedTouches) for (const touch of e.changedTouches) {
+				if (dragging === touch.identifier) dragging = false;
+			} else if (e.which === 1) dragging = false;
 		}
 	}
 })();
