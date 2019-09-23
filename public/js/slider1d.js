@@ -1,4 +1,4 @@
-(function() {
+(() => {
 	for (const el of document.getElementsByClassName('slider1d')) create(el);
 	
 	new MutationObserver((mutations) => {
@@ -24,8 +24,7 @@
 		let x = 0;
 		let y = 0;
 		
-		el.innerHTML = '<div class="slider1d-fill"></div>';
-		el.innerHTML += '<div class="slider1d-text"></div>';
+		el.innerHTML = '<div class="slider1d-fill"></div><div class="slider1d-text"></div>';
 		
 		el.style.backgroundColor = colorize(color, -32);
 		el.childNodes[0].style.backgroundColor = colorize(color);

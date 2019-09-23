@@ -1,4 +1,4 @@
-(function() {
+(() => {
 	for (const el of document.getElementsByClassName('slider2d')) create(el);
 	
 	new MutationObserver((mutations) => {
@@ -27,11 +27,11 @@
 		let x = 0;
 		let y = 0;
 		
-		el.innerHTML = '<div class="slider2d-knob"></div>';
+		el.innerHTML = '<div class="slider2d-knob"></div><div class="slider2d-text"></div>';
 		
-		el.setAttribute('data-label', label);
 		el.style.backgroundColor = colorize(color, -16);
 		el.childNodes[0].style.backgroundColor = colorize(color, 32);
+		el.childNodes[1].innerText = label;
 		
 		el.addEventListener('dblclick', () => {
 			el.setAttribute('data-x-value', xReset);
@@ -58,7 +58,7 @@
 		function update() {
 			el.childNodes[0].style.left = `calc(${(el.getAttribute('data-x-value') - xMin) * 100 / (xMax - xMin)}% - .875vw)`;
 			el.childNodes[0].style.bottom = `calc(${(el.getAttribute('data-y-value') - yMin) * 100 / (yMax - yMin)}% - .875vw)`;
-			el.setAttribute('data-value', `${parseFloat(el.getAttribute('data-x-value')).toFixed(2)} | ${parseFloat(el.getAttribute('data-y-value')).toFixed(2)}`);
+			el.childNodes[1].setAttribute('data-label', `${parseFloat(el.getAttribute('data-x-value')).toFixed(2)} | ${parseFloat(el.getAttribute('data-y-value')).toFixed(2)}`);
 		}
 		
 		function start(e) {

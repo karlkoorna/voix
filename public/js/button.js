@@ -1,4 +1,4 @@
-(function() {
+(() => {
 	for (const el of document.getElementsByClassName('button')) create(el);
 	
 	new MutationObserver((mutations) => {
