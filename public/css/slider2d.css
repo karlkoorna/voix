@@ -14,7 +14,6 @@
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	
 	color: rgba(255, 255, 255, .75);
 	font-size: 2vw;
 	font-weight: bold;
@@ -26,7 +25,6 @@
 }
 
 .slider2d .slider2d-text:after {
-	box-sizing: border-box;
 	content: attr(data-label);
 	width: 100%;
 	margin-top: .25vw;

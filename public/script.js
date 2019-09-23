@@ -145,7 +145,7 @@ function resize() {
 resize();
 window.addEventListener('resize', resize);
 
-// Bind audio level sliders to state.
+// Bind audio level controls to state.
 for (let i = 0; i < 10; i++) {
 	const channel = document.querySelectorAll('#channels .channel')[i];
 	const icon = document.querySelectorAll('#icons .icon')[i];
@@ -177,7 +177,7 @@ ws.addEventListener('message', (e) => {
 	for (const key in changes) {
 		for (const el of document.querySelectorAll(`[data-bind="${key.substr(0, key.indexOf('_')) || key}"]`)) el.setAttribute(`data-${key.indexOf('_') > -1 ? `${key.split('_')[1]}-` : ''}value`, changes[key]);
 		
-		if (key.indexOf('Mute') > -1) document.querySelectorAll('#icons .icon')[parseInt((key.indexOf('Bus') > -1 ? 5 : 0) + parseInt(key.substr(-7, 1)))].setAttribute('src', `img/${key.indexOf('Strip') > -1 ? 'microphone' : 'speaker'}${changes[key] === 1 ? '-mute' : ''}.png`);
+		if (key.indexOf('Mute') > -1) document.querySelectorAll('#icons .icon')[parseInt((key.indexOf('Bus') > -1 ? 5 : 0) + parseInt(key.substr(-7, 1)))].setAttribute('src', `img/${key.indexOf('Strip') > -1 ? 'input-' : 'output-'}${changes[key] === 1 ? 'off' : 'on'}.svg`);
 		if (key.indexOf('Solo') > -1) document.querySelectorAll('#icons .icon')[parseInt((key.indexOf('Bus') > -1 ? 5 : 0) + parseInt(key.substr(-7, 1)))].style.borderTop = `5px solid rgba(${changes[key] === 1 ? '255, 255, 255, .5' : '0, 0, 0, .25'})`;
 		
 		state[key] = changes[key];

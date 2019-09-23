@@ -55,6 +55,7 @@ body {
 
 #icons .icon {
 	padding: 3vw;
+	color: white;
 	border-top: 5px solid rgba(0, 0, 0, .25);
 	cursor: pointer;
 	flex: 1;
