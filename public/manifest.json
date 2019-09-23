@@ -1,4 +1,13 @@
 {
-  "display": "standalone",
-  "orientation": "landscape"
+	"name": "Voix",
+	"background-color": "#2a2a2a",
+	"theme-color": "#2a2a2a",
+	"display": "fullscreen",
+	"orientation": "landscape",
+	"icons": [
+		{
+			"src": "favicon.png",
+			"sizes": "192x192"
+		}
+	]
 }
