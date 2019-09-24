@@ -18,7 +18,7 @@
 		el.style.backgroundColor = colorize(color, 0);
 		
 		setTimeout(() => {
-			el.style.transition = 'background-color .25s linear';
+			el.style.transition = 'background-color .15s linear';
 		}, 100);
 		
 		el.addEventListener('click', click);

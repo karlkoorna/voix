@@ -72,7 +72,7 @@ function showControls(channel) {
 	
 	$controls.innerHTML += `
 		<div class="button control" data-bind="${channel}.Mute" data-value="0" data-type="toggle" data-color="#1c78ad">MUTE</div>
-		<div class="button control" data-color="#666666" onclick="hideControls()">BACK</div>
+		<div class="button control" data-color="#3a3a3a" onclick="hideControls()">BACK</div>
 	`;
 	
 	// Bind elements to state.
@@ -86,13 +86,13 @@ function showControls(channel) {
 			el.setAttribute('data-x-value', state[`${bind}_x`]);
 			el.setAttribute('data-y-value', state[`${bind}_y`]);
 			el.addEventListener('value', () => {
-				ws.send(JSON.stringify([ `${bind}_x`, el.getAttribute('data-x-value') ]));
-				ws.send(JSON.stringify([ `${bind}_y`, el.getAttribute('data-y-value') ]));
+				ws.send(JSON.stringify([ `${bind}_x`, Number(el.getAttribute('data-x-value')) ]));
+				ws.send(JSON.stringify([ `${bind}_y`, Number(el.getAttribute('data-y-value')) ]));
 			});
 		} else {
 			el.setAttribute('data-value', state[bind]);
 			el.addEventListener('value', () => {
-				ws.send(JSON.stringify([ bind, el.getAttribute('data-value') ]));
+				ws.send(JSON.stringify([ bind, Number(el.getAttribute('data-value')) ]));
 			});
 		}
 	}
@@ -151,7 +151,7 @@ for (let i = 0; i < 10; i++) {
 	const icon = document.querySelectorAll('#icons .icon')[i];
 	
 	channel.addEventListener('value', () => {
-		ws.send(JSON.stringify([ channel.getAttribute('data-bind'), channel.getAttribute('data-value') ]));
+		ws.send(JSON.stringify([ channel.getAttribute('data-bind'), Number(channel.getAttribute('data-value')) ]));
 	});
 	
 	icon.addEventListener('click', () => {
