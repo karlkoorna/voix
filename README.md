@@ -3,7 +3,7 @@ Voicemeeter Banana web interface.
 
 ## Usage
 
-Build dependencies `npm run build`.
+Build dependencies with `npm run build`.
 
 Start with `npm start`.
 
