@@ -1,16 +1,17 @@
 {
-  "name": "voix",
-  "description": "Voicemeeter Banana web interface.",
-  "author": "Karl Köörna",
-  "license": "AGPL-3.0",
-  "version": "1.0.0",
-  "main": "app.js",
-  "dependencies": {
-    "express": "^4.16.3",
-    "voice": "gist:4b5e845cb8f986ed481121054667780d",
-    "ws": "^5.0.0"
-  },
-  "scripts": {
-    "start": "node app.js"
-  }
+	"name": "voix",
+	"description": "Voicemeeter Banana web interface.",
+	"author": "Karl Köörna",
+	"license": "AGPL-3.0",
+	"version": "1.0.0",
+	"main": "app.js",
+	"dependencies": {
+		"fastify": "^2.8.0",
+		"fastify-static": "^2.5.0",
+		"ws": "^5.2.2"
+	},
+	"scripts": {
+		"start": "node app.js",
+		"build": "node-gyp configure && node-gyp build"
+	}
 }

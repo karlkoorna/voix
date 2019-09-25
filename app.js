@@ -1,44 +1,52 @@
-const config = require('./config.json');
 const fs = require('fs');
-const vm = require('voice')(config.path);
+const path = require('path');
+const fastify = require('fastify');
+const fastifyStatic = require('fastify-static');
 const WebSocket = require('ws');
-const express = require('express');
 
+const vm = require('./build/Release/vm.node');
+const config = require('./config.json');
+const binds = fs.readFileSync('binds.txt').toString().split('\n');
+
+/* Voiceemeter */
+
+vm.load(config.dll);
 vm.login();
 
-if (vm.getType() !== 2) { vm.logout(); throw new Error('Where is my banana?'); }
+if (vm.getType() !== 2) {
+	vm.logout();
+	throw new Error('Voicemeeter Banana not found.');
+}
 
-const wss = new WebSocket.Server({ port: config.port + 1 });
-const app = express();
+/* HTTP */
 
-app.use(express.static('public'));
+const app = fastify();
+
+app.register(fastifyStatic, {
+	root: path.resolve('public/')
+});
 
 app.get('/scripts', (req, res) => {
-	try {
-		res.json(fs.readdirSync('scripts').filter((file) => file.endsWith('.vms')).map((file) => file.slice(file.indexOf('-') + 2, -4)));
-	} catch (ex) {
-		res.status(500).send(ex);
-	}
+	res.send(fs.readdirSync('scripts').filter((file) => file.endsWith('.vms')).map((file) => file.slice(file.indexOf('-') + 2, -4)));
 });
 
 app.get('/scripts/:script', (req, res) => {
-	try {
-		vm.setMultiple(fs.readFileSync(`scripts/${req.params.script}.vms`).toString());
-		res.end();
-	} catch (ex) {
-		res.status(500).send(ex);
-	}
+	vm.setMultiple('Strip[1].A1 = 1');
 });
 
-app.listen(config.port);
+app.listen(config.port, config.host, (err) => {
+	if (err) throw err;
+});
 
-const binds = fs.readFileSync('binds.txt').toString().split('\n');
+/* WS */
+
+const wss = new WebSocket.Server({ port: config.port + 1 });
 const state = { levels: (new Array(20)).fill(0) };
-const lastState = {};
-let changes = {};
+let lastState = {};
 
 setInterval(() => {
-	const levels = [];
+	const levels = (new Array(20)).fill(0);
+	
 	for (let i = 0; i < 8; i++) levels[i] = vm.getLevel(1, i);
 	
 	levels[8] = vm.getLevel(1, 14);
@@ -58,20 +66,19 @@ setInterval(() => {
 	for (const i in levels) state.levels[i] += levels[i] > state.levels[i] && levels[i] > 0 ? levels[i] - state.levels[i] : -.056;
 	if (vm.isDirty()) for (const bind of binds.slice(0, -1)) state[bind] = vm.getFloat(bind);
 	
-	changes.levels = state.levels;
-	for (const key in state) {
-		if (JSON.stringify(state[key]) !== JSON.stringify(lastState[key])) changes[key] = state[key];
-		lastState[key] = state[key];
-	}
+	const changes = { levels: state.levels };
+	for (const key in state) if (state[key] !== lastState[key]) changes[key] = state[key];
+	lastState = { ...state };
 	
 	for (const client of wss.clients) if (client.readyState === WebSocket.OPEN) client.send(JSON.stringify(changes));
-	changes = {};
 }, 5);
 
 wss.on('connection', (ws) => {
 	ws.send(JSON.stringify(state));
+	
 	ws.on('message', (msg) => {
 		const data = JSON.parse(msg);
+		if (data[0] === 'script') return void vm.setMultiple(fs.readFileSync(`scripts/${data[1]}.vms`).toString());
 		vm.setFloat(data[0], data[1]);
 	});
 });
