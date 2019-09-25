@@ -2,7 +2,6 @@ const ws = new WebSocket(`ws://${location.hostname}:${(Number(location.port) || 
 
 const $levels = document.getElementById('levels');
 const $controls = document.getElementById('controls');
-const $scripts = document.getElementById('scripts');
 
 const state = {};
 
@@ -158,16 +157,6 @@ for (let i = 0; i < 10; i++) {
 		showControls(channel.getAttribute('data-bind').split('.')[0]);
 	});
 }
-
-// Load scripts.
-fetch('scripts').then((res) => {
-	if (res.ok) res.json().then((data) => {
-		for (const i in data) $scripts.innerHTML += `<div class="button script" data-order="${i}" data-color="#${i % 2 ? '3a3a3a3a' : '4a4a4a'}">${data[i]}</div>`;
-		for (const el of document.querySelectorAll('#scripts .script')) el.addEventListener('click', () => {
-			fetch(`scripts/${el.getAttribute('data-order')} - ${el.innerText}`);
-		});
-	});
-});
 
 // Handle WS messages.
 ws.addEventListener('message', (e) => {

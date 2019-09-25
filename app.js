@@ -26,14 +26,6 @@ app.register(fastifyStatic, {
 	root: path.resolve('public/')
 });
 
-app.get('/scripts', (req, res) => {
-	res.send(fs.readdirSync('scripts').filter((file) => file.endsWith('.vms')).map((file) => file.slice(file.indexOf('-') + 2, -4)));
-});
-
-app.get('/scripts/:script', (req, res) => {
-	vm.setMultiple('Strip[1].A1 = 1');
-});
-
 app.listen(config.port, config.host, (err) => {
 	if (err) throw err;
 });
@@ -78,7 +70,6 @@ wss.on('connection', (ws) => {
 	
 	ws.on('message', (msg) => {
 		const data = JSON.parse(msg);
-		if (data[0] === 'script') return void vm.setMultiple(fs.readFileSync(`scripts/${data[1]}.vms`).toString());
 		vm.setFloat(data[0], data[1]);
 	});
 });

@@ -9,7 +9,6 @@ typedef long (*VbGetLevel)(long type, long channel, float* value);
 typedef long (*VbIsDirty)();
 typedef long (*VbSetFloat)(char* name, float value);
 typedef long (*VbGetFloat)(char* name, float* value);
-typedef long (*VbSetMultiple)(char* script);
 
 VbLogin vbLogin;
 VbLogout vbLogout;
@@ -18,7 +17,6 @@ VbGetLevel vbGetLevel;
 VbIsDirty vbIsDirty;
 VbSetFloat vbSetFloat;
 VbGetFloat vbGetFloat;
-VbSetMultiple vbSetMultiple;
 
 // Load Voicemeeter DLL.
 napi_value load(napi_env env, napi_callback_info info) {
@@ -39,7 +37,6 @@ napi_value load(napi_env env, napi_callback_info info) {
 	vbIsDirty = (VbIsDirty) GetProcAddress(dll, "VBVMR_IsParametersDirty");
 	vbSetFloat = (VbSetFloat) GetProcAddress(dll, "VBVMR_SetParameterFloat");
 	vbGetFloat = (VbGetFloat) GetProcAddress(dll, "VBVMR_GetParameterFloat");
-	vbSetMultiple = (VbSetMultiple) GetProcAddress(dll, "VBVMR_SetParameters");
 	
 	napi_value out;
 	napi_get_boolean(env, dll, &out);
@@ -127,22 +124,7 @@ napi_value getFloat(napi_env env, napi_callback_info info) {
 	vbGetFloat(name, &value);
 	
 	napi_value out;
-	napi_create_int32(env, value, &out);
-	return out;
-}
-
-// Set multiple values.
-napi_value setMultiple(napi_env env, napi_callback_info info) {
-	napi_value args[1];
-	size_t argsLength = 1;
-	napi_get_cb_info(env, info, &argsLength, args, NULL, NULL);
-	
-	char script[16384];
-	size_t scriptLength;
-	napi_get_value_string_utf8(env, args[0], (char*) &script, 16384, &scriptLength);
-	
-	napi_value out;
-	napi_create_int32(env, vbSetMultiple(script), &out);
+	napi_create_double(env, value, &out);
 	return out;
 }
 
@@ -178,10 +160,6 @@ napi_value init(napi_env env, napi_value exports) {
 	napi_value fnGetFloat;
 	napi_create_function(env, NULL, 0, getFloat, NULL, &fnGetFloat);
 	napi_set_named_property(env, exports, "getFloat", fnGetFloat);
-	
-	napi_value fnSetMultiple;
-	napi_create_function(env, NULL, 0, setMultiple, NULL, &fnSetMultiple);
-	napi_set_named_property(env, exports, "setMultiple", fnSetMultiple);
 	
 	return exports;
 }

@@ -23,8 +23,8 @@ body {
 #channels {
 	display: flex;
 	position: absolute;
-	width: calc(100% - 9vw);
-	height: calc(100% - 9vw);
+	width: 100%;
+	height: calc(100% - 10vw);
 }
 
 #channels .channel {
@@ -36,9 +36,9 @@ body {
 
 #levels {
 	position: absolute;
-	width: calc(100% - 9vw);
-	height: calc(100% - 9vw);
-	bottom: 9vw;
+	width: 100%;
+	height: calc(100% - 10vw);
+	bottom: 10vw;
 	opacity: .25;
 	pointer-events: none;
 }
@@ -49,12 +49,12 @@ body {
 	display: flex;
 	position: absolute;
 	bottom: 0;
-	width: calc(100% - 9vw);
-	height: 9vw;
+	width: 100%;
+	height: 10vw;
 }
 
 #icons .icon {
-	padding: 3vw;
+	padding: 3.25vw;
 	color: white;
 	border-top: 5px solid rgba(0, 0, 0, .25);
 	cursor: pointer;
@@ -67,7 +67,7 @@ body {
 	z-index: 999;
 	display: grid;
 	position: absolute;
-	width: calc(100% - 9vw);
+	width: 100%;
 	height: 100%;
 	visibility: hidden;
 }
@@ -84,23 +84,4 @@ body {
 
 #controls [onclick] {
 	grid-area: back;
-}
-
-/* Scripts */
-
-#scripts {
-	position: absolute;
-	right: 0;
-	width: 9vw;
-	height: 100%;
-	background-color: #2a2a2a;
-	border-left: 5px solid #1a1a1a;
-	overflow-x: hidden;
-	overflow-y: auto;
-}
-
-#scripts .script {
-	width: 100%;
-	padding: 1.5vw;
-	font-size: 1.5vw;
 }
