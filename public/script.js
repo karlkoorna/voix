@@ -6,7 +6,7 @@ const $controls = document.getElementById('controls');
 const state = {};
 
 // View only mode.
-if ((new URLSearchParams(location.search)).has('view')) WebSocket.prototype.send = () => {};
+if (new URLSearchParams(location.search).has('view')) WebSocket.prototype.send = () => {};
 
 // Show control view for channel.
 function showControls(channel) {

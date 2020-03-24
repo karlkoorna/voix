@@ -8,17 +8,18 @@ const vm = require('./build/Release/vm.node');
 const config = require('./config.json');
 const binds = fs.readFileSync('binds.txt').toString().split('\n');
 
-/* Voiceemeter */
+// Voiceemeter
 
 vm.load(config.dll);
 vm.login();
 
 if (vm.getType() !== 2) {
 	vm.logout();
-	throw new Error('Voicemeeter Banana not found.');
+	console.error('Voicemeeter Banana is not running!');
+	process.exit(1);
 }
 
-/* HTTP */
+// HTTP
 
 const app = fastify();
 
@@ -30,14 +31,14 @@ app.listen(config.port, config.host, (err) => {
 	if (err) throw err;
 });
 
-/* WS */
+// WS
 
 const wss = new WebSocket.Server({ port: config.port + 1 });
-const state = { levels: (new Array(20)).fill(0) };
+const state = { levels: new Array(20).fill(0) };
 let lastState = {};
 
 setInterval(() => {
-	const levels = (new Array(20)).fill(0);
+	const levels = new Array(20).fill(0);
 	
 	for (let i = 0; i < 8; i++) levels[i] = vm.getLevel(1, i);
 	

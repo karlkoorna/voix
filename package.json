@@ -6,9 +6,12 @@
 	"version": "1.0.0",
 	"main": "app.js",
 	"dependencies": {
-		"fastify": "^2.8.0",
-		"fastify-static": "^2.5.0",
-		"ws": "^5.2.2"
+		"fastify": "^2.13.0",
+		"fastify-static": "^2.6.0",
+		"ws": "^7.2.3"
+	},
+	"optionalDependencies": {
+		"bufferutil": "^4.0.1"
 	},
 	"scripts": {
 		"start": "node app.js",

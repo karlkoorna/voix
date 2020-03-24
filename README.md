@@ -3,14 +3,15 @@ Voicemeeter Banana web interface.
 
 ## Usage
 
-Build dependencies.
+Install dependencies.
 ```
-npm run build
+$ npm install
+$ npm run build
 ```
 
-Start the app.
+Start for any environment.
 ```
-npm start
+$ npm start
 ```
 
 ## Limitations
