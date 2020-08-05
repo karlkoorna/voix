@@ -6,7 +6,7 @@
 	"version": "1.0.0",
 	"main": "app.js",
 	"dependencies": {
-		"fastify": "^2.13.0",
+		"fastify": "^2.15.1",
 		"fastify-static": "^2.6.0",
 		"ws": "^7.2.3"
 	},
