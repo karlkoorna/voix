@@ -39,7 +39,6 @@ let lastState = {};
 
 setInterval(() => {
 	const levels = new Array(20).fill(0);
-	
 	for (let i = 0; i < 8; i++) levels[i] = vm.getLevel(1, i);
 	
 	levels[8] = vm.getLevel(1, 14);
