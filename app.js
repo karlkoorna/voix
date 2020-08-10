@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const fastify = require('fastify');
 const fastifyStatic = require('fastify-static');
-const WebSocket = require('ws');
+const ws = require('ws');
 
 const vm = require('./build/Release/vm.node');
 const config = require('./config.json');
@@ -33,7 +33,7 @@ app.listen(config.port, config.host, (err) => {
 
 // WS
 
-const wss = new WebSocket.Server({ port: config.port + 1 });
+const wss = new ws.Server({ port: config.port + 1 });
 const state = { levels: new Array(20).fill(0) };
 let lastState = {};
 
@@ -66,10 +66,10 @@ setInterval(() => {
 	for (const client of wss.clients) if (client.readyState === WebSocket.OPEN) client.send(JSON.stringify(changes));
 }, 5);
 
-wss.on('connection', (ws) => {
-	ws.send(JSON.stringify(state));
+wss.on('connection', (socket) => {
+	socket.send(JSON.stringify(state));
 	
-	ws.on('message', (msg) => {
+	socket.on('message', (msg) => {
 		const data = JSON.parse(msg);
 		vm.setFloat(data[0], data[1]);
 	});
